@@ -4,7 +4,11 @@ import Plat.controller.PlatController;
 import Plat.model.Plat;
 import Commande.dao.IPanierDAO;
 import Commande.dao.PanierDAO;
+import Utilisateur.view.UtilisateurView;
+import Utilisateur.model.Utilisateur;
+
 import java.util.Scanner;
+import java.util.List;
 
 public class PlatView {
     private PlatController controller = new PlatController();
@@ -13,6 +17,7 @@ public class PlatView {
     public void afficherMenuPrincipal(int userId) {
         Scanner sc = new Scanner(System.in);
         int choix;
+        Utilisateur utilisateur = null; // utilisateur connecté
 
         do {
             System.out.println("\n=== MENU DU RESTAURANT ===");
@@ -32,10 +37,24 @@ public class PlatView {
                     controller.filtrerParCategorie(cat);
                 }
                 case 3 -> {
+                    // Vérifier si utilisateur connecté
+                    if (userId <= 0) {
+                        System.out.println("⚠️ Vous devez être connecté pour ajouter au panier.");
+                        UtilisateurView utilisateurView = new UtilisateurView();
+                        utilisateur = utilisateurView.loginOuCreerCompte();
+
+                        if (utilisateur == null) {
+                            System.out.println("⚠️ Impossible d'ajouter au panier sans compte.");
+                            break; // revenir au menu
+                        }
+                        userId = utilisateur.getId(); // mettre à jour userId
+                    }
+
                     System.out.print("ID du plat à ajouter : ");
                     int id = sc.nextInt();
                     System.out.print("Quantité : ");
                     int qte = sc.nextInt();
+                    sc.nextLine(); // flush
 
                     Plat plat = controller.obtenirPlatParId(id);
                     if (plat != null) {

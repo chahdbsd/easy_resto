@@ -16,6 +16,13 @@ public class Plat {
         this.prix = prix;
         this.categorie = categorie;
     }
+    public Plat(int id, String nom, double prix, String categorie) {
+        this.id = id;
+        this.nom = nom;
+        this.prix = prix;
+        this.categorie = categorie;
+        this.description = ""; // valeur par défaut
+    }
 
     // Getters / Setters
     public int getId() { return id; }

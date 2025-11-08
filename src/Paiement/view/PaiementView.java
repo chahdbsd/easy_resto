@@ -36,3 +36,4 @@ public class PaiementView {
         } while (choix != 0);
     }
 }
+
