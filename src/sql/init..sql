@@ -77,6 +77,21 @@ CREATE TABLE message (
                          reponse TEXT
 );
 
+-- Table paiement
+CREATE TABLE paiement (
+                          id SERIAL PRIMARY KEY,
+                          commande_id INT NOT NULL,
+                          montant NUMERIC(10,2) NOT NULL,
+                          methode VARCHAR(50) NOT NULL, -- 'en ligne' ou 'à la récupération'
+                          effectue BOOLEAN DEFAULT FALSE,
+                          date_paiement TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                          CONSTRAINT fk_commande
+                              FOREIGN KEY (commande_id)
+                                  REFERENCES commande(id)
+                                  ON DELETE CASCADE
+);
+
+
 -- -----------------------------
 -- DONNÉES TEST
 -- -----------------------------
@@ -118,3 +133,7 @@ INSERT INTO avis (user_id, plat_id, note, commentaire) VALUES
 INSERT INTO message (user_id, message) VALUES
                                            (1,'Bonjour, je n’ai pas reçu ma commande.'),
                                            (2,'Comment puis-je payer en ligne ?');
+
+-- Exemple d'insertion de test
+INSERT INTO paiement (commande_id, montant, methode, effectue)
+VALUES (1, 25.50, 'en ligne', TRUE);
