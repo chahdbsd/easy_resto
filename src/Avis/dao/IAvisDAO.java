@@ -4,8 +4,8 @@ import Avis.model.Avis;
 import java.util.List;
 
 public interface IAvisDAO {
-    int ajouterAvis(Avis avis);
-    List<Avis> listerAvisParPlat(int platId);
-    List<Avis> listerTousLesAvis();
-    boolean supprimerAvis(int avisId);
+    List<Avis> findAll();
+    List<Avis> findByPlat(int platId);
+    void insert(int userId, int platId, int note, String commentaire);
+    void delete(int avisId);
 }

@@ -6,6 +6,6 @@ public interface ICommandeDAO {
     java.util.List<Commande.model.Commande> historiqueCommandes(int userId);
     double calculerMontantTotal(int commandeId);
 
-    // ← Ajout de cette méthode
+
     double getPrixPlat(int platId);
 }

@@ -9,10 +9,10 @@ public class Commande {
     private String statut; // exemple : "en cours", "terminée"
     private boolean paiementEnLigne;
 
-    // Constructeur vide
+
     public Commande() {}
 
-    // Constructeur complet
+
     public Commande(int id, int userId, Timestamp dateCommande, String statut, boolean paiementEnLigne) {
         this.id = id;
         this.userId = userId;
@@ -21,7 +21,7 @@ public class Commande {
         this.paiementEnLigne = paiementEnLigne;
     }
 
-    // Constructeur simplifié (statut par défaut)
+
     public Commande(int id, int userId, Timestamp dateCommande, boolean paiementEnLigne) {
         this.id = id;
         this.userId = userId;

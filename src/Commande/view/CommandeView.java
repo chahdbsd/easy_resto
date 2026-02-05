@@ -6,9 +6,14 @@ import Commande.dao.PanierDAO;
 import java.util.Scanner;
 
 public class CommandeView {
-    private CommandeController controller = new CommandeController();
-    private IPanierDAO panierDAO = new PanierDAO();
-    private Scanner sc = new Scanner(System.in);
+    private final CommandeController controller;
+    private final IPanierDAO panierDAO = new PanierDAO();
+    private final Scanner sc = new Scanner(System.in);
+
+    // ✅ Nouveau constructeur exigé
+    public CommandeView(CommandeController controller) {
+        this.controller = controller;
+    }
 
     public void menuCommande(int userId) {
         int choix;
@@ -19,15 +24,13 @@ public class CommandeView {
             System.out.println("3. Voir historique");
             System.out.println("0. Retour");
             System.out.print("Choix : ");
-            choix = sc.nextInt();
-            sc.nextLine();
+            choix = sc.nextInt(); sc.nextLine();
 
             switch (choix) {
                 case 1 -> panierDAO.voirPanier(userId).forEach(System.out::println);
                 case 2 -> {
                     System.out.print("Paiement en ligne ? (1: oui, 0: non) : ");
-                    boolean enLigne = sc.nextInt() == 1;
-                    sc.nextLine();
+                    boolean enLigne = (sc.nextInt() == 1); sc.nextLine();
                     controller.passerCommandeAvecDetails(userId, enLigne);
                 }
                 case 3 -> controller.voirHistorique(userId);

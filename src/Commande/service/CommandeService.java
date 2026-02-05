@@ -6,13 +6,24 @@ import Commande.dao.IPanierDAO;
 import Commande.dao.PanierDAO;
 import Commande.model.Panier;
 import Commande.model.CommandePlat;
+import Database.DBConnection;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import events.AjoutEvenement;
+import events.EvenementDispatcher;
 
 public class CommandeService implements ICommandeService {
     private ICommandeDAO commandeDAO = new CommandeDAO();
     private IPanierDAO panierDAO = new PanierDAO();
 
+    private final EvenementDispatcher dispatcher;
+    public CommandeService(EvenementDispatcher dispatcher) { this.dispatcher = dispatcher;}
     @Override
     public int passerCommande(int userId, boolean paiementEnLigne) {
         List<Panier> panier = panierDAO.voirPanier(userId);
@@ -33,8 +44,14 @@ public class CommandeService implements ICommandeService {
 
         panierDAO.viderPanier(userId);
         System.out.println("✅ Commande #" + commandeId + " passée avec succès !");
+
+        if (dispatcher != null) {
+            dispatcher.publish(new AjoutEvenement("commande#" + commandeId));
+        }
+
         return commandeId;
     }
+
 
     @Override
     public void voirHistorique(int userId) {
@@ -74,13 +91,28 @@ public class CommandeService implements ICommandeService {
         return platsCommandes;
     }
 
+
     @Override
     public double calculerMontantTotalCommandeUtilisateur(int userId) {
-        List<Panier> panier = panierDAO.voirPanier(userId);
-        double total = 0;
-        for (Panier p : panier) {
-            total += p.getQuantite() * commandeDAO.getPrixPlat(p.getPlat().getId());
+        Integer lastCommandeId = findLastCommandeIdForUser(userId);
+        if (lastCommandeId == null) {
+            return 0.0;
         }
-        return total;
+        return calculerMontantTotal(lastCommandeId);
+    }
+
+
+    private Integer findLastCommandeIdForUser(int userId) {
+        final String sql = "SELECT id FROM commande WHERE user_id = ? ORDER BY id DESC LIMIT 1";
+        try (Connection c = DBConnection.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

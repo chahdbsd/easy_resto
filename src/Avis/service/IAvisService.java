@@ -1,11 +1,11 @@
 package Avis.service;
 
 import Avis.model.Avis;
-import java.util.List;
 
 public interface IAvisService {
-    int ajouterAvis(Avis avis);
-    List<Avis> listerAvisParPlat(int platId);
-    List<Avis> listerTousLesAvis();
-    boolean supprimerAvis(int avisId);
+    void afficherTous();
+    void afficherParPlat(int platId);
+    void ajouter(int userId, int platId, int note, String commentaire);
+    void ajouterAvis(Avis avis);     // utile si ta View passe un objet
+    void supprimer(int avisId);
 }

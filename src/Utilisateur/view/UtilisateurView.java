@@ -9,10 +9,7 @@ public class UtilisateurView {
     private UtilisateurService service = new UtilisateurService();
     private Scanner sc = new Scanner(System.in);
 
-    /**
-     * Permet à l'utilisateur de se connecter ou de créer un compte.
-     * Retourne l'objet Utilisateur connecté ou créé, ou null si échec.
-     */
+
     public Utilisateur loginOuCreerCompte() {
         System.out.println("\n=== Connexion / Création de compte ===");
         System.out.print("Voulez-vous (1) vous connecter ou (2) créer un compte ? ");

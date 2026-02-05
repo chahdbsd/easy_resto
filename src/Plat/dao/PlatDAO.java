@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlatDAO implements IPlatDAO { // <--- IMPORTANT, implémente l'interface
+public class PlatDAO implements IPlatDAO {
 
     @Override
     public List<Plat> findAll() {

@@ -6,21 +6,13 @@ public class Avis {
     private int id;
     private int userId;
     private int platId;
-    private int note; // 1 à 5
-    private String commentaire;
-    private Timestamp date;
+    private int note;             // 1..5
+    private String commentaire;   // optionnel
+    private Timestamp dateAvis;   // peut être null si colonne absente
 
     public Avis() {}
 
-    public Avis(int id, int userId, int platId, int note, String commentaire, Timestamp date) {
-        this.id = id;
-        this.userId = userId;
-        this.platId = platId;
-        this.note = note;
-        this.commentaire = commentaire;
-        this.date = date;
-    }
-
+    // Getters / Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -36,11 +28,13 @@ public class Avis {
     public String getCommentaire() { return commentaire; }
     public void setCommentaire(String commentaire) { this.commentaire = commentaire; }
 
-    public Timestamp getDate() { return date; }
-    public void setDate(Timestamp date) { this.date = date; }
+    public Timestamp getDateAvis() { return dateAvis; }
+    public void setDateAvis(Timestamp dateAvis) { this.dateAvis = dateAvis; }
 
     @Override
     public String toString() {
-        return "Avis #" + id + " | Plat: " + platId + " | Note: " + note + "/5 | " + commentaire;
+        String dateTxt = (dateAvis == null) ? "-" : dateAvis.toString();
+        return String.format("#%d | user=%d | plat=%d | %d★ | %s | %s",
+                id, userId, platId, note, (commentaire == null ? "" : commentaire), dateTxt);
     }
 }
